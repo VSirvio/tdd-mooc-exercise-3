@@ -49,7 +49,11 @@ export class PostgresUserDao {
 }
 
 export class PasswordService {
-  users = PostgresUserDao.getInstance(); // accessing a database makes this hard to test
+  users;
+
+  constructor(users) {
+    this.users = users;
+  }
 
   async changePassword(userId, oldPassword, newPassword) {
     const user = await this.users.getById(userId);
