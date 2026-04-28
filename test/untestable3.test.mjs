@@ -8,10 +8,7 @@ import { parsePeopleCsv } from "../src/untestable3.mjs";
 // Yor,Forger,27,Female
 
 describe("Untestable 3: CSV file parsing", () => {
-  test("todo", () => {
-    // TODO: write proper tests
-    try {
-      expect(parsePeopleCsv("")).to.deep.equal([]);
-    } catch (e) {}
+  test("returns an empty array for empty data", () => {
+    expect(parsePeopleCsv("")).to.deep.equal([]);
   });
 });
