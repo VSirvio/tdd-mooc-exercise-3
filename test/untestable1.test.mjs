@@ -3,8 +3,7 @@ import { expect } from "chai";
 import { daysUntilChristmas } from "../src/untestable1.mjs";
 
 describe("Untestable 1: days until Christmas", () => {
-  test("todo", () => {
-    // TODO: write proper tests
-    expect(daysUntilChristmas(new Date("2026-04-28T12:35:40.771Z"))).to.be.a("number");
+  test("returns the correct value when there are 11 days until Christmas", () => {
+    expect(daysUntilChristmas(new Date("2025-12-14T12:35:40.771Z"))).to.equal(11);
   });
 });
