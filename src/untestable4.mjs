@@ -1,26 +1,10 @@
 import argon2 from "@node-rs/argon2";
-import pg from "pg";
 
 export class PostgresUserDao {
-  static instance; // using the singleton pattern makes this hard to test
+  db;
 
-  static getInstance() {
-    if (!this.instance) {
-      this.instance = new PostgresUserDao();
-    }
-    return this.instance;
-  }
-
-  db = new pg.Pool({
-    user: process.env.PGUSER,
-    host: process.env.PGHOST,
-    database: process.env.PGDATABASE,
-    password: process.env.PGPASSWORD,
-    port: process.env.PGPORT,
-  });
-
-  close() {
-    this.db.end();
+  constructor(db) {
+    this.db = db;
   }
 
   #rowToUser(row) {
