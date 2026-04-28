@@ -1,10 +1,10 @@
-function diceRoll() {
+export function diceRoll() {
   const min = 1;
   const max = 6;
   return Math.floor(Math.random() * (max + 1 - min) + min); // this is hard to test because of the randomness
 }
 
-export function diceHandValue() {
+export function diceHandValue(diceRoll) {
   const die1 = diceRoll();
   const die2 = diceRoll();
   if (die1 === die2) {
