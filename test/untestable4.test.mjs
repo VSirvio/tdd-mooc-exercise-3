@@ -40,4 +40,14 @@ describe("Untestable 4: enterprise application", () => {
   test("returns null when trying to get user that does not exist", async () => {
     expect(await users.getById(173)).to.be.null;
   });
+
+  test("can save user and then get it by ID", async () => {
+    const user = {
+      userId: 56,
+      passwordHash: "$argon2id$v=19$m=19456,t=2,p=1$" +
+        "djse7vwvbRlIHc7vMaLrVg$uTdjriUiGrjxOx+IzryXWKUGHa5oaoPJ8V05bZx1VbA",
+    };
+    await users.save(user);
+    expect(await users.getById(user.userId)).to.deep.equal(user);
+  });
 });
