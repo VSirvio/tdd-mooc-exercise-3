@@ -1,10 +1,11 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, test } from "vitest";
 import { expect } from "chai";
 import { readFile } from "node:fs/promises";
+import argon2 from "@node-rs/argon2";
 import pg from "pg";
-import { PostgresUserDao } from "../src/untestable4.mjs";
+import { PasswordService, PostgresUserDao } from "../src/untestable4.mjs";
 
-describe("Untestable 4: enterprise application", () => {
+describe("Untestable 4: enterprise application (database access)", () => {
   let db;
   let createTablesQuery;
   let dropTablesQuery;
@@ -49,5 +50,27 @@ describe("Untestable 4: enterprise application", () => {
     };
     await users.save(user);
     expect(await users.getById(user.userId)).to.deep.equal(user);
+  });
+});
+
+describe("Untestable 4: enterprise application (password service)", () => {
+  test("can change password", async () => {
+    const user = {
+      userId: 3,
+      passwordHash: "$argon2id$v=19$m=19456,t=2,p=1$" +
+        "at+XJLR/qj0aRiXm+WKPPw$zYXqLwSFpSsaSDVMQ0tac/RqZGRtoDznOEQPhXkJecM",
+    };
+
+    let modifiedUser = null;
+    const userDaoSpy = {
+      getById: () => user,
+      save: (user) => modifiedUser = user,
+    };
+
+    const service = new PasswordService(userDaoSpy);
+
+    await service.changePassword(user.userId, "oldpassword", "newpassword");
+
+    expect(argon2.verifySync(modifiedUser.passwordHash, "newpassword")).to.be.true;
   });
 });
